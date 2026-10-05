@@ -132,11 +132,20 @@
     }
     footer .status { display: inline-flex; align-items: center; gap: 8px; color: #fff; }
 
+    .note {
+      margin-top: 6px; padding: 0 4px;
+      font-size: 13.5px; line-height: 1.6; color: rgba(255,255,255,.85);
+      opacity: 0; animation: rise .7s cubic-bezier(.2,.7,.2,1) .6s forwards;
+    }
+    .note a { color: #fff; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+
     @keyframes rise { from { opacity: 0; transform: translateY(16px);} to { opacity: 1; transform: translateY(0);} }
     .card:nth-child(2) { animation-delay: .12s; }
     .card:nth-child(3) { animation-delay: .20s; }
     .card:nth-child(4) { animation-delay: .28s; }
     .card:nth-child(5) { animation-delay: .36s; }
+    .card:nth-child(6) { animation-delay: .44s; }
+    .card:nth-child(7) { animation-delay: .52s; }
 
     @media (max-width: 480px) {
       .card { grid-template-columns: 30px 1fr auto; gap: 12px; padding: 18px 16px; }
@@ -200,6 +209,34 @@
         </span>
         <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
       </a>
+
+      <!-- ArgoCD·Prefect 는 외부 노출 없이 NodePort 만 있어 SSH 터널을 연 뒤 localhost 로 접속한다.
+           ssh -N -L 8443:localhost:32693 -L 30420:localhost:30420 -p 2024 yapp@suitestudy.com -->
+      <a class="card" href="https://localhost:8443" target="_blank" rel="noopener">
+        <span class="idx">05</span>
+        <span class="meta">
+          <span class="tag">Deploy</span>
+          <span class="name">ArgoCD</span>
+          <span class="host">localhost:8443 · SSH 터널 필요</span>
+        </span>
+        <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
+      </a>
+
+      <a class="card" href="http://localhost:30420" target="_blank" rel="noopener">
+        <span class="idx">06</span>
+        <span class="meta">
+          <span class="tag">Workflow</span>
+          <span class="name">Prefect (Staging)</span>
+          <span class="host">localhost:30420 · SSH 터널 필요</span>
+        </span>
+        <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
+      </a>
+
+      <p class="note">
+        ArgoCD·Prefect는 SSH 터널을 연 뒤 접속합니다.
+        <a href="https://github.com/Darren4641/tunnelswitch" target="_blank" rel="noopener">TunnelSwitch</a>를
+        쓰면 macOS 메뉴바에서 터널을 바로 켜고 끌 수 있습니다.
+      </p>
     </section>
 
     <footer>
