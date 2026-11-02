@@ -52,7 +52,7 @@
 
     .shell {
       position: relative; z-index: 2;
-      width: 100%; max-width: 620px;
+      width: 100%; max-width: 1080px;
       display: flex; flex-direction: column; gap: 42px;
     }
 
@@ -84,16 +84,25 @@
     }
     .subtitle { margin-top: 8px; color: rgba(255,255,255,.8); font-size: 14.5px; line-height: 1.6; }
 
-    /* ── Service cards ── */
-    .services { display: flex; flex-direction: column; gap: 12px; }
-    .label {
-      font-family: var(--display); font-weight: 600; font-size: 12px; letter-spacing: .08em;
-      text-transform: uppercase; color: rgba(255,255,255,.75); padding: 0 4px 2px;
+    /* ── Service groups ── */
+    .services {
+      display: grid; align-items: start; gap: 34px 20px;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
     }
+    .group { display: flex; flex-direction: column; gap: 12px; }
+    .label {
+      display: flex; align-items: baseline; gap: 10px; padding: 0 4px 2px;
+      font-size: 17px; font-weight: 700; letter-spacing: -.01em; color: #fff;
+    }
+    .label small {
+      font-family: var(--display); font-weight: 600; font-size: 11.5px; letter-spacing: .08em;
+      text-transform: uppercase; color: rgba(255,255,255,.7);
+    }
+    .grid { display: flex; flex-direction: column; gap: 10px; }
     .card {
       position: relative; display: grid;
-      grid-template-columns: 40px 1fr auto; align-items: center; gap: 18px;
-      padding: 20px 20px; border-radius: 20px;
+      grid-template-columns: 1fr auto; align-items: center; gap: 12px;
+      padding: 16px 18px; border-radius: 18px;
       background: var(--card); color: var(--ink); text-decoration: none;
       box-shadow: 0 10px 30px -12px rgba(120,30,15,.35);
       opacity: 0; animation: rise .7s cubic-bezier(.2,.7,.2,1) forwards;
@@ -101,26 +110,25 @@
     }
     .card:hover { transform: translateY(-4px); box-shadow: 0 22px 44px -16px rgba(120,30,15,.5); }
 
-    .idx { font-family: var(--display); font-weight: 700; font-size: 15px; color: var(--coral-3); }
     .meta { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
     .tag {
       font-family: var(--display); font-weight: 600; font-size: 11px; letter-spacing: .06em;
       text-transform: uppercase; color: var(--coral-3);
     }
-    .name { font-size: 19px; font-weight: 700; letter-spacing: -.01em; color: var(--ink); }
+    .name { font-size: 17px; font-weight: 700; letter-spacing: -.01em; color: var(--ink); }
     .host {
-      font-size: 13px; font-weight: 500; color: var(--host);
+      font-size: 12.5px; font-weight: 500; color: var(--host);
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     .go {
-      width: 42px; height: 42px; flex-shrink: 0; display: grid; place-items: center;
+      width: 34px; height: 34px; flex-shrink: 0; display: grid; place-items: center;
       border-radius: 50%; color: #fff;
       background: linear-gradient(135deg, var(--coral-2), var(--coral-3));
       box-shadow: 0 6px 16px -6px rgba(245,67,47,.7);
       transition: transform .3s cubic-bezier(.2,.7,.2,1);
     }
     .card:hover .go { transform: rotate(-45deg) scale(1.06); }
-    .go svg { width: 17px; height: 17px; }
+    .go svg { width: 15px; height: 15px; }
 
     /* ── Footer ── */
     footer {
@@ -133,28 +141,15 @@
     footer .status { display: inline-flex; align-items: center; gap: 8px; color: #fff; }
 
     .note {
-      margin-top: 6px; padding: 0 4px;
+      padding: 0 4px;
       font-size: 13.5px; line-height: 1.6; color: rgba(255,255,255,.85);
-      opacity: 0; animation: rise .7s cubic-bezier(.2,.7,.2,1) .6s forwards;
     }
     .note a { color: #fff; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
 
     @keyframes rise { from { opacity: 0; transform: translateY(16px);} to { opacity: 1; transform: translateY(0);} }
-    .card:nth-child(2) { animation-delay: .12s; }
-    .card:nth-child(3) { animation-delay: .20s; }
-    .card:nth-child(4) { animation-delay: .28s; }
-    .card:nth-child(5) { animation-delay: .36s; }
-    .card:nth-child(6) { animation-delay: .44s; }
-    .card:nth-child(7) { animation-delay: .52s; }
-    .card:nth-child(8) { animation-delay: .60s; }
-    .card:nth-child(9) { animation-delay: .68s; }
-    .card:nth-child(10) { animation-delay: .76s; }
-    .card:nth-child(11) { animation-delay: .84s; }
+    .group:nth-child(2) .card { animation-delay: .15s; }
+    .group:nth-child(3) .card { animation-delay: .30s; }
 
-    @media (max-width: 480px) {
-      .card { grid-template-columns: 30px 1fr auto; gap: 12px; padding: 18px 16px; }
-      .name { font-size: 17px; }
-    }
     @media (prefers-reduced-motion: reduce) { *, ::before { animation: none !important; opacity: 1 !important; } }
   </style>
 </head>
@@ -171,117 +166,119 @@
       <p class="subtitle">팀 네키의 서비스로 바로 이동하세요.</p>
     </header>
 
-    <section class="services">
-      <span class="label">바로가기</span>
+    <div class="services">
+      <section class="group">
+        <h2 class="label">협업 <small>Workspace</small></h2>
+        <div class="grid">
+          <a class="card" href="https://sprint.suitestudy.com:4641">
+            <span class="meta">
+              <span class="tag">Sprint · Wiki</span>
+              <span class="name">스프린트 / 위키</span>
+              <span class="host">sprint.suitestudy.com</span>
+            </span>
+            <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
+          </a>
 
-      <a class="card" href="https://admin-web.suitestudy.com:4641/?view=notifications">
-        <span class="idx">01</span>
-        <span class="meta">
-          <span class="tag">Dashboard</span>
-          <span class="name">어드민</span>
-          <span class="host">admin-web.suitestudy.com</span>
-        </span>
-        <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
-      </a>
+          <a class="card" href="https://www.figma.com/design/fEoUAq5t5VrE3EU2fhZCd8/-%EA%B8%B0%ED%9A%8D-%EB%94%94%EC%9E%90%EC%9D%B8--YAPP" target="_blank" rel="noopener">
+            <span class="meta">
+              <span class="tag">Design</span>
+              <span class="name">기획 / 디자인</span>
+              <span class="host">figma.com · [기획/디자인] YAPP</span>
+            </span>
+            <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
+          </a>
 
-      <a class="card" href="https://sprint.suitestudy.com:4641">
-        <span class="idx">02</span>
-        <span class="meta">
-          <span class="tag">Sprint · Wiki</span>
-          <span class="name">스프린트 / 위키</span>
-          <span class="host">sprint.suitestudy.com</span>
-        </span>
-        <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
-      </a>
+          <a class="card" href="https://github.com/Team-Neki" target="_blank" rel="noopener">
+            <span class="meta">
+              <span class="tag">Repository</span>
+              <span class="name">깃허브</span>
+              <span class="host">github.com/Team-Neki</span>
+            </span>
+            <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
+          </a>
+        </div>
+      </section>
 
-      <a class="card" href="https://github.com/Team-Neki" target="_blank" rel="noopener">
-        <span class="idx">03</span>
-        <span class="meta">
-          <span class="tag">Repository</span>
-          <span class="name">깃허브</span>
-          <span class="host">github.com/Team-Neki</span>
-        </span>
-        <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
-      </a>
+      <section class="group">
+        <h2 class="label">서비스 <small>Product</small></h2>
+        <div class="grid">
+          <a class="card" href="https://admin-web.suitestudy.com:4641/?view=notifications">
+            <span class="meta">
+              <span class="tag">Dashboard</span>
+              <span class="name">어드민</span>
+              <span class="host">admin-web.suitestudy.com</span>
+            </span>
+            <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
+          </a>
 
-      <a class="card" href="https://dev-yapp.suitestudy.com:4641/swagger-ui/index.html" target="_blank" rel="noopener">
-        <span class="idx">04</span>
-        <span class="meta">
-          <span class="tag">API Docs</span>
-          <span class="name">스웨거 (Dev)</span>
-          <span class="host">dev-yapp.suitestudy.com:4641/swagger-ui</span>
-        </span>
-        <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
-      </a>
+          <a class="card" href="https://app.amplitude.com/analytics/soft-glade-797361/home" target="_blank" rel="noopener">
+            <span class="meta">
+              <span class="tag">Analytics</span>
+              <span class="name">Amplitude</span>
+              <span class="host">app.amplitude.com</span>
+            </span>
+            <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
+          </a>
 
-      <a class="card" href="https://www.figma.com/design/fEoUAq5t5VrE3EU2fhZCd8/-%EA%B8%B0%ED%9A%8D-%EB%94%94%EC%9E%90%EC%9D%B8--YAPP" target="_blank" rel="noopener">
-        <span class="idx">05</span>
-        <span class="meta">
-          <span class="tag">Design</span>
-          <span class="name">기획 / 디자인 (Figma)</span>
-          <span class="host">figma.com · [기획/디자인] YAPP</span>
-        </span>
-        <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
-      </a>
+          <a class="card" href="https://apps.apple.com/kr/app/id6757490609" target="_blank" rel="noopener">
+            <span class="meta">
+              <span class="tag">iOS</span>
+              <span class="name">App Store</span>
+              <span class="host">apps.apple.com · id6757490609</span>
+            </span>
+            <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
+          </a>
 
-      <a class="card" href="https://apps.apple.com/kr/app/id6757490609" target="_blank" rel="noopener">
-        <span class="idx">06</span>
-        <span class="meta">
-          <span class="tag">iOS</span>
-          <span class="name">App Store</span>
-          <span class="host">apps.apple.com · id6757490609</span>
-        </span>
-        <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
-      </a>
+          <a class="card" href="https://play.google.com/store/apps/details?id=com.neki.android&amp;hl=ko" target="_blank" rel="noopener">
+            <span class="meta">
+              <span class="tag">Android</span>
+              <span class="name">Play Store</span>
+              <span class="host">play.google.com · com.neki.android</span>
+            </span>
+            <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
+          </a>
+        </div>
+      </section>
 
-      <a class="card" href="https://play.google.com/store/apps/details?id=com.neki.android&amp;hl=ko" target="_blank" rel="noopener">
-        <span class="idx">07</span>
-        <span class="meta">
-          <span class="tag">Android</span>
-          <span class="name">Play Store</span>
-          <span class="host">play.google.com · com.neki.android</span>
-        </span>
-        <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
-      </a>
+      <section class="group">
+        <h2 class="label">개발 · 인프라 <small>Dev &amp; Infra</small></h2>
+        <div class="grid">
+          <a class="card" href="https://dev-yapp.suitestudy.com:4641/swagger-ui/index.html" target="_blank" rel="noopener">
+            <span class="meta">
+              <span class="tag">API Docs</span>
+              <span class="name">스웨거 (Dev)</span>
+              <span class="host">dev-yapp.suitestudy.com</span>
+            </span>
+            <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
+          </a>
 
-      <a class="card" href="https://app.amplitude.com/analytics/soft-glade-797361/home" target="_blank" rel="noopener">
-        <span class="idx">08</span>
-        <span class="meta">
-          <span class="tag">Analytics</span>
-          <span class="name">Amplitude</span>
-          <span class="host">app.amplitude.com</span>
-        </span>
-        <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
-      </a>
+          <!-- ArgoCD·Prefect 는 외부 노출 없이 NodePort 만 있어 SSH 터널을 연 뒤 localhost 로 접속한다.
+               ssh -N -L 8443:localhost:32693 -L 30420:localhost:30420 -p 2024 yapp@suitestudy.com -->
+          <a class="card" href="https://localhost:8443" target="_blank" rel="noopener">
+            <span class="meta">
+              <span class="tag">Deploy</span>
+              <span class="name">ArgoCD</span>
+              <span class="host">localhost:8443 · SSH 터널 필요</span>
+            </span>
+            <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
+          </a>
 
-      <!-- ArgoCD·Prefect 는 외부 노출 없이 NodePort 만 있어 SSH 터널을 연 뒤 localhost 로 접속한다.
-           ssh -N -L 8443:localhost:32693 -L 30420:localhost:30420 -p 2024 yapp@suitestudy.com -->
-      <a class="card" href="https://localhost:8443" target="_blank" rel="noopener">
-        <span class="idx">09</span>
-        <span class="meta">
-          <span class="tag">Deploy</span>
-          <span class="name">ArgoCD</span>
-          <span class="host">localhost:8443 · SSH 터널 필요</span>
-        </span>
-        <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
-      </a>
-
-      <a class="card" href="http://localhost:30420" target="_blank" rel="noopener">
-        <span class="idx">10</span>
-        <span class="meta">
-          <span class="tag">Workflow</span>
-          <span class="name">Prefect (Staging)</span>
-          <span class="host">localhost:30420 · SSH 터널 필요</span>
-        </span>
-        <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
-      </a>
-
-      <p class="note">
-        ArgoCD·Prefect는 SSH 터널을 연 뒤 접속합니다.
-        <a href="https://github.com/Darren4641/tunnelswitch" target="_blank" rel="noopener">TunnelSwitch</a>를
-        쓰면 macOS 메뉴바에서 터널을 바로 켜고 끌 수 있습니다.
-      </p>
-    </section>
+          <a class="card" href="http://localhost:30420" target="_blank" rel="noopener">
+            <span class="meta">
+              <span class="tag">Workflow</span>
+              <span class="name">Prefect (Staging)</span>
+              <span class="host">localhost:30420 · SSH 터널 필요</span>
+            </span>
+            <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span>
+          </a>
+        </div>
+        <p class="note">
+          ArgoCD·Prefect는 SSH 터널을 연 뒤 접속합니다.
+          <a href="https://github.com/Darren4641/tunnelswitch" target="_blank" rel="noopener">TunnelSwitch</a>를
+          쓰면 macOS 메뉴바에서 터널을 바로 켜고 끌 수 있습니다.
+        </p>
+      </section>
+    </div>
 
     <footer>
       <span class="status"><span class="dot"></span>All systems operational</span>
